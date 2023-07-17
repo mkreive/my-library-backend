@@ -30,7 +30,8 @@ public class Book {
     @Column(name = "category")
     private String category;
 
+//    @Lob
     @Column(name = "img")
-    private byte[] img;
+    private String img;
 
 }
