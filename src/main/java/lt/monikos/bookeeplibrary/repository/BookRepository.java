@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-    Page<Book> findByTitleContaining(@RequestParam("title") String title, Pageable pageable);
+    Page<Book> findByTitle(@RequestParam("title") String title, Pageable pageable);
+
+    Page<Book> findByAuthor(@RequestParam("author") String value, Pageable pageable);
+
+    Page<Book> findByCategory(@RequestParam("category") String category, Pageable pageable);
 
 
 }
