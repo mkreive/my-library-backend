@@ -20,10 +20,8 @@ public class SecurityConfiguration {
         // Protect endpoints at /api/<type>/secure
         http.authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/api/books/secure/**",
-                                        "/api/reviews/secure/**",
-                                        "/api/messages/secure/**",
-                                        "/api/admin/secure/**")
+                                .requestMatchers("/api/books").permitAll()
+                                .requestMatchers("/api/books/secure/**")
                                 .authenticated())
                 .oauth2ResourceServer()
                 .jwt();
@@ -34,9 +32,6 @@ public class SecurityConfiguration {
         // Add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class,
                 new HeaderContentNegotiationStrategy());
-
-        // Force a non-empty response body for 401's to make the response friendly
-//        Okta.configureResourceServer401ResponseBody(http);
 
         return http.build();
     }

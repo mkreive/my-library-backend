@@ -2,6 +2,7 @@ package lt.monikos.bookeeplibrary.controller;
 
 import lt.monikos.bookeeplibrary.entity.Book;
 import lt.monikos.bookeeplibrary.service.BookService;
+import lt.monikos.bookeeplibrary.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class BookController {
 
     // check count of books loaned
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount() {
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
         String userEmail = "user@email.com";
         return bookService.currentLoansCount(userEmail);
 
@@ -28,14 +29,16 @@ public class BookController {
 
     // check if book is checked out by user
     @GetMapping("/secure/ischeckedout/byuser")
-    public Boolean checkoutBookByUser(@RequestParam Long bookId) {
-        String userEmail = "user@email.com";
+    public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
+                                      @RequestParam Long bookId) {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token);
         return bookService.checkoutBookByUser(userEmail, bookId);
 
     }
 
     @PutMapping("/secure/checkout")
-    public Book checkoutBook(@RequestParam Long bookId) throws Exception {
+    public Book checkoutBook(@RequestHeader(value = "Authorization") String token,
+                             @RequestParam Long bookId) throws Exception {
         String userEmail = "user@email.com";
         return bookService.checkoutBook(userEmail, bookId);
     }
