@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
+//    @Autowired
     private BookService bookService;
 
-//    @Autowired
-//    public BookController(BookService bookService) {
-//        this.bookService = bookService;
-//    }
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     // check count of books loaned
     @GetMapping("/secure/currentloans/count")

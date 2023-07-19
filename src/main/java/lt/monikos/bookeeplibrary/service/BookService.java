@@ -4,7 +4,6 @@ import lt.monikos.bookeeplibrary.entity.Book;
 import lt.monikos.bookeeplibrary.entity.Checkout;
 import lt.monikos.bookeeplibrary.repository.BookRepository;
 import lt.monikos.bookeeplibrary.repository.CheckoutRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +14,16 @@ import java.util.Optional;
 @Transactional
 public class BookService {
 
-    @Autowired
+//    @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
+//    @Autowired
     private CheckoutRepository checkoutRepository;
 
-//    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
-//        this.bookRepository = bookRepository;
-//        this.checkoutRepository = checkoutRepository;
-//    }
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
+        this.bookRepository = bookRepository;
+        this.checkoutRepository = checkoutRepository;
+    }
 
     public Book checkoutBook(String userEmail, Long bookId) throws Exception {
         Optional<Book> book = bookRepository.findById(bookId);
