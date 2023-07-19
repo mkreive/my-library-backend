@@ -3,7 +3,6 @@ package lt.monikos.bookeeplibrary.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
@@ -15,13 +14,15 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // Disable Cross Site Request Forgery
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.csrf().disable();
 
         // Protect endpoints at /api/<type>/secure
-        http.authorizeHttpRequests(configurer ->
+        http.authorizeRequests(configurer ->
                         configurer
-                                .requestMatchers("/api/books").permitAll()
-                                .requestMatchers("/api/books/secure/**")
+                                .requestMatchers("/api/books/secure/**",
+                                        "/api/reviews/secure/**",
+                                        "/api/messages/secure/**",
+                                        "/api/admin/secure/**")
                                 .authenticated())
                 .oauth2ResourceServer()
                 .jwt();
@@ -32,6 +33,9 @@ public class SecurityConfiguration {
         // Add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class,
                 new HeaderContentNegotiationStrategy());
+
+        // Force a non-empty response body for 401's to make the response friendly
+//        Okta.configureResourceServer401ResponseBody(http);
 
         return http.build();
     }
