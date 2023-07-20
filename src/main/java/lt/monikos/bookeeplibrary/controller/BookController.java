@@ -1,10 +1,13 @@
 package lt.monikos.bookeeplibrary.controller;
 
 import lt.monikos.bookeeplibrary.entity.Book;
+import lt.monikos.bookeeplibrary.responsemodels.ShelfCurrentLoansResponse;
 import lt.monikos.bookeeplibrary.service.BookService;
 import lt.monikos.bookeeplibrary.utils.ExtractJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //@CrossOrigin("http://localhost:3000")
 @RestController
@@ -17,6 +20,12 @@ public class BookController {
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/secure/currentloans")
+    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value = "Authorization") String token) throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+        return bookService.currentLoans(userEmail);
     }
 
     // check count of books loaned
