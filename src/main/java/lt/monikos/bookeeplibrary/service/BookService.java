@@ -2,15 +2,20 @@ package lt.monikos.bookeeplibrary.service;
 
 import lt.monikos.bookeeplibrary.entity.Book;
 import lt.monikos.bookeeplibrary.entity.Checkout;
+import lt.monikos.bookeeplibrary.entity.History;
 import lt.monikos.bookeeplibrary.repository.BookRepository;
 import lt.monikos.bookeeplibrary.repository.CheckoutRepository;
+import lt.monikos.bookeeplibrary.repository.HistoryRepository;
 import lt.monikos.bookeeplibrary.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -21,11 +26,15 @@ public class BookService {
 
     private CheckoutRepository checkoutRepository;
 
+    private HistoryRepository historyRepository;
 
-    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository
+
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository,
+                       HistoryRepository historyRepository
                        ) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
+        this.historyRepository = historyRepository;
     }
 
     public Book checkoutBook (String userEmail, Long bookId) throws Exception {
@@ -116,16 +125,16 @@ public class BookService {
         bookRepository.save(book.get());
         checkoutRepository.deleteById(validateCheckout.getId());
 
-//        History history = new History(
-//                userEmail,
-//                validateCheckout.getCheckoutDate(),
-//                LocalDate.now().toString(),
-//                book.get().getTitle(),
-//                book.get().getAuthor(),
-//                book.get().getDescription(),
-//                book.get().getImg()
-//        );
-
+        History history = new History(
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString(),
+                book.get().getTitle(),
+                book.get().getAuthor(),
+                book.get().getDescription(),
+                book.get().getImg()
+        );
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail, Long bookId) throws Exception {
