@@ -1,7 +1,6 @@
 package lt.monikos.bookeeplibrary.service;
 
 import lt.monikos.bookeeplibrary.entity.Review;
-import lt.monikos.bookeeplibrary.repository.BookRepository;
 import lt.monikos.bookeeplibrary.repository.ReviewRepository;
 import lt.monikos.bookeeplibrary.requestmodels.ReviewRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,11 @@ import java.util.Date;
 @Transactional
 public class ReviewService {
 
-    private BookRepository bookRepository;
     private ReviewRepository reviewRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, BookRepository bookRepository) {
+    public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.bookRepository = bookRepository;
     }
 
     public void postReview(String userEmail, ReviewRequest reviewRequest) throws Exception {
