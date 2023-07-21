@@ -7,6 +7,7 @@ import lt.monikos.bookeeplibrary.repository.BookRepository;
 import lt.monikos.bookeeplibrary.repository.CheckoutRepository;
 import lt.monikos.bookeeplibrary.repository.HistoryRepository;
 import lt.monikos.bookeeplibrary.responsemodels.ShelfCurrentLoansResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class BookService {
 
     private HistoryRepository historyRepository;
 
-
+    @Autowired
     public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository,
                        HistoryRepository historyRepository
                        ) {

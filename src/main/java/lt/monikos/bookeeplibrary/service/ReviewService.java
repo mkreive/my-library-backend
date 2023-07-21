@@ -44,11 +44,7 @@ public class ReviewService {
 
     public Boolean userReviewListed(String userEmail, Long bookId) {
         Review validateReview = reviewRepository.findByUserEmailAndBookId(userEmail, bookId);
-        if (validateReview != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return validateReview != null;
     }
 
 

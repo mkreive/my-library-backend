@@ -28,18 +28,6 @@ public class AdminService {
         this.checkoutRepository = checkoutRepository;
     }
 
-        public void postBook(AddBookRequest addBookRequest) {
-        Book book = new Book();
-        book.setTitle(addBookRequest.getTitle());
-        book.setAuthor(addBookRequest.getAuthor());
-        book.setDescription(addBookRequest.getDescription());
-        book.setCopies(addBookRequest.getCopies());
-        book.setCopiesAvailable(addBookRequest.getCopies());
-        book.setCategory(addBookRequest.getCategory());
-        book.setImg(addBookRequest.getImg());
-        bookRepository.save(book);
-    }
-
     public void increaseBookQuantity(Long bookId) throws Exception {
 
         Optional<Book> book = bookRepository.findById(bookId);
@@ -68,6 +56,17 @@ public class AdminService {
         bookRepository.save(book.get());
     }
 
+    public void postBook(AddBookRequest addBookRequest) {
+        Book book = new Book();
+        book.setTitle(addBookRequest.getTitle());
+        book.setAuthor(addBookRequest.getAuthor());
+        book.setDescription(addBookRequest.getDescription());
+        book.setCopies(addBookRequest.getCopies());
+        book.setCopiesAvailable(addBookRequest.getCopies());
+        book.setCategory(addBookRequest.getCategory());
+        book.setImg(addBookRequest.getImg());
+        bookRepository.save(book);
+    }
 
     public void deleteBook(Long bookId) throws Exception {
 
@@ -77,8 +76,10 @@ public class AdminService {
             throw new Exception("Book not found");
         }
 
+
+// TODO - pasitaisyty!
         bookRepository.delete(book.get());
-        checkoutRepository.deleteAllByBookId(bookId);
-        reviewRepository.deleteAllByBookId(bookId);
+//        checkoutRepository.deleteAllByBookId(bookId);
+//        reviewRepository.deleteAllByBookId(bookId);
     }
 }
